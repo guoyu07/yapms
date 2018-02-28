@@ -17,9 +17,22 @@ class UserPermission extends Model
     protected $guarded = ['id'];
 
     /**
+     *
+     */
+    protected $table = 'user_permissions';
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     *
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
