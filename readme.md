@@ -1,58 +1,249 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## `YAPMS` - Yet Another Property Management Software (PMS) for Vacation Rentals
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### Getting started
 
-## About Laravel
+In an effort to get you setup and running, I highly recommend using Vagrant and Homestead. The current version of Homestead comes packaged with PHP 7.2. The steps below cover getting things configured on a machine running Linux. Steps for setting this up on a Windows machine will get added soon. You can always reference the official [Laravel Homestead](https://laravel.com/docs/5.6/homestead) documentation for a complete overview.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+### Prerequisites
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Clone the yapms repo:
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+```
+cd ~
 
-## Learning Laravel
+mkdir git
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+cd ~/git
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+git clone git@github.com:JayForbes/yapms.git
 
-## Laravel Sponsors
+cd yapms
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+composer install
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Pulse Storm](http://www.pulsestorm.net/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
+cp .env.example .env
 
-## Contributing
+vim .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The only value you will need to change in the new .env file is
 
-## Security Vulnerabilities
+```
+DB_DATABASE=homestead
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Change it to something like yapms, then write and quit:
 
-## License
+```
+:wq
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Download and install Vagrant and VirtualBox:
+
+[Vagrant](https://www.vagrantup.com/downloads.html)
+
+[VirtualBox & VirtualBox Extension Pack](https://www.virtualbox.org/wiki/Downloads)
+
+> As of this writing, my version of VirtualBox is 5.2.4 and Vagrant is 2.0.1, running Linux Mint 18.3
+> - Jay Forbes
+
+#### Installing the Homestead Vagrant Box:
+
+```
+vagrant box add laravel/homestead
+```
+
+#### Clone the Homestead repo:
+
+```
+git clone https://github.com/laravel/homestead.git ~/Homestead
+```
+
+#### Check out the stable branch:
+
+```
+cd ~/Homestead
+
+git checkout v7.1.2
+```
+
+Check out the [Laravel Homestead](https://github.com/laravel/homestead/releases) release page for the latest stable version.
+
+#### After cloning is complete, run:
+
+```
+bash init.sh
+```
+
+#### Configure the Homestead.yaml file:
+
+```
+vim Homestead.yaml
+```
+
+Here is an example of what my Homestead.yaml file contains:
+
+```
+---
+ip: "192.168.10.10"
+memory: 2048
+cpus: 1
+provider: virtualbox
+mariadb: true
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+    - map: /home/myusernamedir/git/yapms
+      to: /home/vagrant/dev.yapms.com
+
+sites:
+    - map: dev.yapms.com
+      to: /home/vagrant/dev.yapms.com/public
+
+databases:
+    - yapms
+
+# blackfire:
+#     - id: foo
+#       token: bar
+#       client-id: foo
+#       client-token: bar
+
+# ports:
+#     - send: 50000
+#       to: 5000
+#     - send: 7777
+#       to: 777
+#       protocol: udp
+```
+
+In the event you want a fresh Homestead.yaml file, you can always run:
+
+```
+bash init.sh
+```
+
+#### Update your /etc/hosts file:
+
+```
+sudo vim /etc/hosts
+```
+
+Add the following then write and quit:
+
+```
+192.168.10.10 dev.yapms.com
+```
+
+#### Start Vagrant
+
+```
+vagrant up
+```
+
+#### Stop Vagrant
+
+```
+vagrant halt
+```
+
+### Non Vagrant approach
+
+**COMING SOON**
+
+#### YAPMS was built using Laravel framework
+
+Since this application is using Laravel 5.5. The requirements below will need to be met first.
+
+* PHP >= 7.0.0
+* OpenSSL PHP Extension
+* PDO PHP Extension
+* Mbstring PHP Extension
+* Tokenizer PHP Extension
+* XML PHP Extension
+
+If you are using Linux Mint 18.x you can use these commands to install PHP 7.x:
+
+```
+$ sudo apt-get install php7.0 libapache2-mod-php7.0 php7.0-mbstring php7.0-mcrypt php7.0-xmlrpc phpunit
+```
+
+#### Install
+
+At this point you've cloned the repo, be sure before running the below command that you are in the yapms.com directory.
+
+```
+$ composer install
+```
+
+Use the below command to copy the .env.example which is just a template where you will need to set some values.
+```
+$ cp .env.example .env
+```
+
+Once you made a copy and renamed the .evn.example file to just .env you will need to supply a few value when editing it. Don't worry this file is not tracked by git, so it's safe to store your database credentials in it, no worries! The values you will need to fill in are:
+
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=yourdatabasename
+DB_USERNAME=yourusername
+DB_PASSWORD=yoursupersecretpassword
+```
+
+And if you want to get S3 working, you will also need to fill in these values:
+
+```
+S3_KEY=
+S3_SECRET=
+S3_REGION=
+S3_BUCKET=
+```
+
+Property images are stored locally for backup purposes only. Property images get purged once a month once delete and the only thing that can not be recovered once past that limit. Whomever is using the property data will and should be using the Amazon S3 links to property images (better be anyways!!!!).
+
+You may run into some issues if you ran composer install prior to copying the .env file. No problemo! The below command is safe to run and should be, before moving onto migrations and seeding.
+
+```
+$ php artisan key:generate
+```
+
+```
+$ php artisan migrate
+```
+
+```
+$ php artisan db:seed
+```
+
+#### Run the application
+
+### Framework
+
+Made with love, made with the [Laravel](http://laravel.com) framework.
+
+### Contact
+
+You can communicate with me using the following method(s):
+
+* [Follow me on Twitter](http://twitter.com/rjforbe) for announcements and updates.
+
+### License
+
+YAPMS is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+### Contributing
+
+Before sending a pull request, please be sure to review the [Contributing Guidelines](CONTRIBUTING.md) first, thank you.
+
+### Coding standards
+
+Please follow the following guides and code standards:
+
+* [PSR 4 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader.md)
+* [PSR 2 Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+* [PSR 1 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
