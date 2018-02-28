@@ -32,4 +32,20 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     *
+     */
+    public function userType()
+    {
+        return $this->hasOne('App\Models\UserType');
+    }
+
+    /**
+     *
+     */
+    public function userPermission()
+    {
+        return $this->hasOne('App\Models\UserPermission');
+    }
 }
