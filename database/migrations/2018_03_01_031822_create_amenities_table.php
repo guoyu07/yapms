@@ -15,7 +15,14 @@ class CreateAmenitiesTable extends Migration
     {
         Schema::create('amenities', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('account_id');
+            $table->string('name');
+            $table->dateTime('created_at');
+            $table->integer('created_by');
+            $table->timestamp('updated_at');
+            $table->integer('updated_by');
+            $table->dateTime('deleted_at')->nullable();
+            $table->integer('deleted_by')->nullable();
         });
     }
 

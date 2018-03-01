@@ -13,6 +13,7 @@ class CreateTaxesTable extends Migration
      */
     public function up()
     {
+        // TODO Jay - need to come back around to this migration
         Schema::create('taxes', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
