@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPermission extends Model
+class Role extends Model
 {
     use SoftDeletes;
 
@@ -19,7 +19,7 @@ class UserPermission extends Model
     /**
      *
      */
-    protected $table = 'user_permissions';
+    protected $table = 'roles';
 
     /**
      * The attributes that should be mutated to dates.
